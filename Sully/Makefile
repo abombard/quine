@@ -12,6 +12,7 @@ $(NAME):$(SRC)
 	@echo "$@ was created"
 
 clean:
+	@rm -f $(NAME)_*
 
 fclean:clean
 	@rm -f $(NAME)
