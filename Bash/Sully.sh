@@ -4,55 +4,57 @@ NAME=Sully
 
 typeset -i i=5
 
-(( i == 0 )) && exit 0
-
 [[ $(basename $0) == "Sully.sh" ]] && (( i ++ ))
 
-(( i -- ))
+(( i == 0 )) && exit 0 || (( i -- ))
 
 quine () {
-cat >${NAME}_$i.sh <<EOF
-#!/bin/bash
 
-NAME=Sully
+	exec >${NAME}_$i.sh
 
-typeset -i i=$i
+	cat <<-EOF
+		#!/bin/bash
 
-(( i == 0 )) && exit 0
+		NAME=Sully
 
-[[ \$(basename \$0) == "Sully.sh" ]] && (( i ++ ))
+		typeset -i i=$i
 
-(( i -- ))
+		[[ \$(basename \$0) == "Sully.sh" ]] && (( i ++ ))
 
-$1
-EOF
-echo -en "quine \047" >>${NAME}_$i.sh
-echo -n "$1" >>${NAME}_$i.sh
-echo -e "\047" >>${NAME}_$i.sh
+		(( i == 0 )) && exit 0 || (( i -- ))
 
-bash ${NAME}_$i.sh
+		$1
+	EOF
+
+	echo -en "quine \047"
+	echo -n "$1"
+	echo -e "\047"
+
+	bash ${NAME}_$i.sh
 }
 
 quine 'quine () {
-cat >${NAME}_$i.sh <<EOF
-#!/bin/bash
 
-NAME=Sully
+	exec >${NAME}_$i.sh
 
-typeset -i i=$i
+	cat <<-EOF
+		#!/bin/bash
 
-(( i == 0 )) && exit 0
+		NAME=Sully
 
-[[ \$(basename \$0) == "Sully.sh" ]] && (( i ++ ))
+		typeset -i i=$i
 
-(( i -- ))
+		[[ \$(basename \$0) == "Sully.sh" ]] && (( i ++ ))
 
-$1
-EOF
-echo -en "quine \047" >>${NAME}_$i.sh
-echo -n "$1" >>${NAME}_$i.sh
-echo -e "\047" >>${NAME}_$i.sh
+		(( i == 0 )) && exit 0 || (( i -- ))
 
-bash ${NAME}_$i.sh
+		$1
+	EOF
+
+	echo -en "quine \047"
+	echo -n "$1"
+	echo -e "\047"
+
+	bash ${NAME}_$i.sh
 }
 '
